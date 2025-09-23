@@ -1,4 +1,4 @@
-package futebol;
+package io.github.brunoborges.teammaker;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,7 +22,7 @@ public class Time {
 
 	public void addJogador(Jogador j) {
 		if (isCompleto()) {
-			throw new IllegalStateException("Time '" + getNome() + "' já está completo");
+			throw new IllegalStateException("Time '" + getNome() + "' jï¿½ estï¿½ completo");
 		}
 		forca += j.getForca();
 		jogadores.add(j);

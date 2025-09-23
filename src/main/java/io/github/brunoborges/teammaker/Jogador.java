@@ -1,4 +1,4 @@
-package futebol;
+package io.github.brunoborges.teammaker;
 
 public class Jogador {
 
