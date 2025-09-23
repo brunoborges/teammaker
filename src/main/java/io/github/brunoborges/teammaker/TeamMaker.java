@@ -88,8 +88,8 @@ public class TeamMaker {
 	}
 
 	private static boolean calculateBalance() {
-		int minimumStrength = Integer.MAX_VALUE;
-		int maximumStrength = Integer.MIN_VALUE;
+		double minimumStrength = Double.MAX_VALUE;
+		double maximumStrength = Double.MIN_VALUE;
 
 		for (Team team : teams) {
 			minimumStrength = Math.min(team.getStrength(), minimumStrength);
@@ -120,7 +120,7 @@ public class TeamMaker {
 		}
 	}
 
-	private static Player getPlayer(int strength) {
+	private static Player getPlayer(double strength) {
 		Player player = null;
 		if (players.size() == 0)
 			return null;
@@ -151,7 +151,7 @@ public class TeamMaker {
 			weight -= Math.random();
 		}
 
-		int strength = 0;
+		double strength = 0;
 		if (weight >= 0 && weight < 0.10) {
 			// 10%
 			strength = 1;

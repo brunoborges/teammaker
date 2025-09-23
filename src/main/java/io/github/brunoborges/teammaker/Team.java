@@ -6,7 +6,7 @@ import java.util.List;
 public class Team {
 
 	private List<Player> players = new ArrayList<Player>();
-	private int strength = 0;
+	private double strength = 0;
 	private String name;
 	private int playerLimit;
 
@@ -27,7 +27,7 @@ public class Team {
 		players.add(p);
 	}
 
-	public int getStrength() {
+	public double getStrength() {
 		return strength;
 	}
 
@@ -45,7 +45,9 @@ public class Team {
 			string.append(" (").append(p.getStrength()).append(')');
 			string.append(',');
 		}
-		string.deleteCharAt(string.length() - 1);
+		if (!players.isEmpty()) {
+			string.deleteCharAt(string.length() - 1);
+		}
 		string.append("}]");
 		return string.toString();
 	}
