@@ -20,10 +20,16 @@ public class TeamMaker {
 	private List<Player> players;
 	private List<Team> teams;
 	private double averageStrength;
+	private final int playersPerTeam;
 
-	public TeamMaker() {
+	public TeamMaker(int playersPerTeam) {
 		this.players = new ArrayList<>();
 		this.teams = new ArrayList<>();
+		this.playersPerTeam = playersPerTeam;
+	}
+
+	public TeamMaker() {
+		this(PLAYERS_PER_TEAM);
 	}
 
 	/**
@@ -61,9 +67,9 @@ public class TeamMaker {
 
 	private void prepareTeams() {
 		teams.clear();
-		int totalTeams = players.size() / PLAYERS_PER_TEAM;
+		int totalTeams = players.size() / playersPerTeam;
 		for (int i = 0; i < totalTeams; i++) {
-			teams.add(new Team("Team " + ALPHABET[i], PLAYERS_PER_TEAM));
+			teams.add(new Team("Team " + ALPHABET[i], playersPerTeam));
 		}
 	}
 
