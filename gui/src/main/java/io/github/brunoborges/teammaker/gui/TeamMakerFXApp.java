@@ -22,7 +22,7 @@ import java.util.Optional;
 
 /**
  * JavaFX GUI application for TeamMaker.
- * Provides a user-friendly interface for configuring teams and players,
+ * Provides a user-friendly interface for configuring teams and members,
  * and running team draws.
  */
 public class TeamMakerFXApp extends Application {
@@ -41,7 +41,7 @@ public class TeamMakerFXApp extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("⚽ TeamMaker - Football Team Generator");
+        primaryStage.setTitle("👥 TeamMaker - Balanced Team Generator");
         
         // Create main layout
         BorderPane root = new BorderPane();
@@ -49,6 +49,7 @@ public class TeamMakerFXApp extends Application {
         
         // Create tabs
         tabPane = new TabPane();
+        tabPane.setId("tabPane");
         
         // Configuration tab
         Tab configTab = new Tab("Configuration");
@@ -84,7 +85,7 @@ public class TeamMakerFXApp extends Application {
     }
 
     /**
-     * Creates the configuration pane with players and teams management.
+     * Creates the configuration pane with members and teams management.
      */
     private VBox createConfigurationPane() {
         VBox configPane = new VBox(10);
@@ -93,7 +94,7 @@ public class TeamMakerFXApp extends Application {
         // Split configuration into two columns
         HBox mainConfigBox = new HBox(20);
         
-        // Left side - Players
+        // Left side - Members
         VBox playersBox = createPlayersSection();
         
         // Right side - Teams and Settings
@@ -103,7 +104,7 @@ public class TeamMakerFXApp extends Application {
         HBox.setHgrow(playersBox, Priority.ALWAYS);
         HBox.setHgrow(teamsBox, Priority.ALWAYS);
         
-        // Score scale section
+        // Rating scale section
         VBox scoreScaleBox = createScoreScaleSection();
         
         // Action buttons
@@ -115,26 +116,28 @@ public class TeamMakerFXApp extends Application {
     }
 
     /**
-     * Creates the players management section.
+     * Creates the members management section.
      */
     private VBox createPlayersSection() {
         VBox playersBox = new VBox(10);
         
-        Label playersLabel = new Label("🏃 Players");
+        Label playersLabel = new Label("👥 Members");
         playersLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 16px;");
         
-        // Players list
+        // Members list
         playerListView = new ListView<>(players);
+        playerListView.setId("playerListView");
         playerListView.setPrefHeight(200);
         playerListView.setCellFactory(listView -> new PlayerListCell());
         
-        // Player input controls
+        // Member input controls
         HBox playerInputBox = new HBox(10);
         TextField playerNameField = new TextField();
-        playerNameField.setPromptText("Player Name");
+        playerNameField.setPromptText("Member Name");
         Spinner<Double> playerScoreSpinner = new Spinner<>(1.0, 5.0, 3.0, 0.1);
         playerScoreSpinner.setEditable(true);
-        Button addPlayerButton = new Button("Add Player");
+        Button addPlayerButton = new Button("Add Member");
+        addPlayerButton.setId("addPlayerButton");
         
         addPlayerButton.setOnAction(e -> {
             String name = playerNameField.getText().trim();
@@ -148,7 +151,7 @@ public class TeamMakerFXApp extends Application {
             }
         });
         
-        // Add player on Enter key
+        // Add member on Enter key
         playerNameField.setOnAction(e -> addPlayerButton.fire());
         
         playerInputBox.getChildren().addAll(playerNameField, playerScoreSpinner, addPlayerButton);
@@ -157,6 +160,7 @@ public class TeamMakerFXApp extends Application {
         // Player management buttons
         HBox playerButtonsBox = new HBox(10);
         Button removePlayerButton = new Button("Remove Selected");
+        removePlayerButton.setId("removePlayerButton");
         Button editPlayerButton = new Button("Edit Selected");
         Button clearPlayersButton = new Button("Clear All");
         
@@ -194,11 +198,12 @@ public class TeamMakerFXApp extends Application {
     private VBox createTeamsSection() {
         VBox teamsBox = new VBox(10);
         
-        Label teamsLabel = new Label("🏆 Teams");
+        Label teamsLabel = new Label("📋 Teams");
         teamsLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 16px;");
         
         // Teams list
         teamListView = new ListView<>(teamNames);
+        teamListView.setId("teamListView");
         teamListView.setPrefHeight(200);
         
         // Team input controls
@@ -206,6 +211,7 @@ public class TeamMakerFXApp extends Application {
         TextField teamNameField = new TextField();
         teamNameField.setPromptText("Team Name");
         Button addTeamButton = new Button("Add Team");
+        addTeamButton.setId("addTeamButton");
         
         addTeamButton.setOnAction(e -> {
             String name = teamNameField.getText().trim();
@@ -223,6 +229,7 @@ public class TeamMakerFXApp extends Application {
         // Team management buttons
         HBox teamButtonsBox = new HBox(10);
         Button removeTeamButton = new Button("Remove Selected");
+        removeTeamButton.setId("removeTeamButton");
         Button clearTeamsButton = new Button("Clear All");
         
         removeTeamButton.setOnAction(e -> {
@@ -252,12 +259,12 @@ public class TeamMakerFXApp extends Application {
     }
 
     /**
-     * Creates the score scale configuration section.
+     * Creates the rating scale configuration section.
      */
     private VBox createScoreScaleSection() {
         VBox scoreScaleBox = new VBox(10);
         
-        Label scoreScaleLabel = new Label("⚖️ Player Score Scale");
+        Label scoreScaleLabel = new Label("⚖️ Member Rating Scale");
         scoreScaleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 16px;");
         
         HBox sliderBox = new HBox(20);
@@ -266,6 +273,7 @@ public class TeamMakerFXApp extends Application {
         VBox minBox = new VBox(5);
         minScoreLabel = new Label("Min Score: 1.0");
         minScoreSlider = new Slider(1.0, 5.0, 1.0);
+        minScoreSlider.setId("minScoreSlider");
         minScoreSlider.setMajorTickUnit(1.0);
         minScoreSlider.setMinorTickCount(0);
         minScoreSlider.setSnapToTicks(true);
@@ -282,6 +290,7 @@ public class TeamMakerFXApp extends Application {
         VBox maxBox = new VBox(5);
         maxScoreLabel = new Label("Max Score: 5.0");
         maxScoreSlider = new Slider(1.0, 5.0, 5.0);
+        maxScoreSlider.setId("maxScoreSlider");
         maxScoreSlider.setMajorTickUnit(1.0);
         maxScoreSlider.setMinorTickCount(0);
         maxScoreSlider.setSnapToTicks(true);
@@ -312,10 +321,11 @@ public class TeamMakerFXApp extends Application {
         buttonBox.setPadding(new Insets(20, 0, 0, 0));
         
         Button generateButton = new Button("🎲 Generate Teams");
+        generateButton.setId("generateButton");
         generateButton.setStyle("-fx-font-size: 16px; -fx-padding: 10px 20px;");
         generateButton.setOnAction(e -> generateTeams());
         
-        Button loadDefaultButton = new Button("📋 Load Defaults");
+        Button loadDefaultButton = new Button("📋 Load Sample Members");
         loadDefaultButton.setOnAction(e -> {
             loadDefaultPlayers();
             loadDefaultTeams();
@@ -333,10 +343,11 @@ public class TeamMakerFXApp extends Application {
         VBox resultsPane = new VBox(10);
         resultsPane.setPadding(new Insets(10));
         
-        Label resultsLabel = new Label("🏆 Team Draw Results");
+        Label resultsLabel = new Label("📊 Team Formation Results");
         resultsLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 18px;");
         
         resultsArea = new TextArea();
+        resultsArea.setId("resultsArea");
         resultsArea.setEditable(false);
         resultsArea.setStyle("-fx-font-family: 'Courier New', monospace; -fx-font-size: 12px;");
         resultsArea.setText("Click 'Generate Teams' to see results here...");
@@ -402,7 +413,7 @@ public class TeamMakerFXApp extends Application {
             if (empty || player == null) {
                 setText(null);
             } else {
-                setText(String.format("⚽ %s (%.1f)", player.name(), player.score()));
+                setText(String.format("👤 %s (%.1f)", player.name(), player.score()));
             }
         }
     }
@@ -495,14 +506,14 @@ public class TeamMakerFXApp extends Application {
         StringBuilder sb = new StringBuilder();
         
         sb.append("═══════════════════════════════════════════════════════════════════\n");
-        sb.append("                      ⚽ TEAM DRAW RESULTS ⚽                       \n");
+        sb.append("                     📊 TEAM FORMATION RESULTS 📊                     \n");
         sb.append("═══════════════════════════════════════════════════════════════════\n\n");
         
         List<Team> teams = result.getTeams();
         for (int i = 0; i < teams.size(); i++) {
             Team team = teams.get(i);
             sb.append(String.format("┌─── Team #%d - %s\n", i + 1, team.getName()));
-            sb.append(String.format("│ Strength: %.1f\n", team.getScore()));
+            sb.append(String.format("│ Rating: %.1f\n", team.getScore()));
             sb.append("├─ Players:\n");
             
             for (Player player : team.getPlayers()) {
@@ -522,8 +533,8 @@ public class TeamMakerFXApp extends Application {
         double maxStrength = teams.stream().mapToDouble(Team::getScore).max().orElse(0.0);
         double difference = maxStrength - minStrength;
         
-        sb.append(String.format("Average Team Strength: %.1f\n", avgStrength));
-        sb.append(String.format("Strength Range: %.1f - %.1f\n", minStrength, maxStrength));
+        sb.append(String.format("Average Team Rating: %.1f\n", avgStrength));
+        sb.append(String.format("Rating Range: %.1f - %.1f\n", minStrength, maxStrength));
         sb.append(String.format("Max Difference: %.1f", difference));
         
         if (difference <= 1.0) {
@@ -536,7 +547,7 @@ public class TeamMakerFXApp extends Application {
         
         sb.append("\n\n");
         sb.append("═══════════════════════════════════════════════════════════════════\n");
-        sb.append("                🏆 GOOD LUCK WITH YOUR MATCHES! 🏆                \n");
+        sb.append("               � GOOD LUCK WITH YOUR ACTIVITIES! �                \n");
         sb.append("═══════════════════════════════════════════════════════════════════\n");
         
         resultsArea.setText(sb.toString());
@@ -553,8 +564,8 @@ public class TeamMakerFXApp extends Application {
         if (selected == null) return;
         
         Dialog<Player> dialog = new Dialog<>();
-        dialog.setTitle("Edit Player");
-        dialog.setHeaderText("Edit player information");
+        dialog.setTitle("Edit Member");
+        dialog.setHeaderText("Edit member information");
         
         // Create form
         GridPane grid = new GridPane();
@@ -632,7 +643,7 @@ public class TeamMakerFXApp extends Application {
      */
     private void saveConfiguration(Stage stage) {
         if (players.isEmpty() || teamNames.isEmpty()) {
-            showAlert("Nothing to Save", "Please add players and teams before saving.");
+            showAlert("Nothing to Save", "Please add members and teams before saving.");
             return;
         }
         
@@ -688,8 +699,8 @@ public class TeamMakerFXApp extends Application {
     private void showAboutDialog() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("About TeamMaker");
-        alert.setHeaderText("⚽ TeamMaker GUI v1.0");
-        alert.setContentText("A JavaFX application for generating balanced football teams.\n\n" +
+        alert.setHeaderText("👥 TeamMaker GUI v1.0");
+        alert.setContentText("A JavaFX application for generating balanced teams.\n\n" +
                            "Features:\n" +
                            "• Configure players and teams\n" +
                            "• Smart team balancing algorithm\n" +

@@ -1,34 +1,34 @@
-# ⚽ TeamMaker - Football Team Generator
+# 👥 TeamMaker - Balanced Team Generator
 
-[![Java](https://img.shields.io/badge/Java-21-orange.svg)](https://openjdk.java.net/projects/jdk/21/)
+[![Java](https://img.shields.io/badge/Java-21-orange.svg)](https://openjdk.java.net/projects/jdk/21)
 [![Maven](https://img.shields.io/badge/Maven-3.9+-blue.svg)](https://maven.apache.org/)
 [![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Tests](https://img.shields.io/badge/Tests-57%20passing-brightgreen.svg)](#testing)
 [![JavaFX](https://img.shields.io/badge/JavaFX-21.0.5-blue.svg)](https://openjfx.io/)
 [![GraalVM](https://img.shields.io/badge/GraalVM-Native%20Image-red.svg)](https://www.graalvm.org/)
 
-A comprehensive Java 21 application for generating balanced football teams with both command-line interface and JavaFX GUI, featuring GraalVM Native Image support for ultra-fast startup.
+A comprehensive Java 21 application for generating balanced teams with both command-line interface and JavaFX GUI, featuring GraalVM Native Image support for ultra-fast startup.
 
 ## 🚀 Features
 
 ### Core Functionality
-- **Smart Team Balancing**: Advanced algorithm to create balanced teams based on player skills
+- **Smart Team Balancing**: Advanced algorithm to create balanced teams based on member ratings
 - **Multiple Interfaces**: Both CLI and JavaFX GUI available
 - **Configuration Management**: Save and load team configurations from JSON files
 - **GraalVM Native Image**: Lightning-fast startup (17ms) with 51MB executable
 
 ### Command Line Interface (CLI)
-- **⚖️ Smart Team Balancing**: Automatically distributes players to create balanced teams based on skill ratings
+- **⚖️ Smart Team Balancing**: Automatically distributes members to create balanced teams based on skill ratings
 - **🎨 Beautiful Output**: Colorful console output with Unicode box-drawing characters and emojis
-- **📋 Flexible Input**: Support for JSON configuration files or built-in default players
+- **📋 Flexible Input**: Support for JSON configuration files or built-in default members
 - **🔧 Professional CLI**: Command-line interface powered by Picocli with comprehensive help
 - **📊 Statistics**: Team strength analysis with balance indicators
 
 ### Graphical User Interface (GUI)
 - **Modern JavaFX Interface**: Clean, intuitive design with custom styling
-- **Player Management**: Add, edit, remove, and configure players with real-time validation
+- **Member Management**: Add, edit, remove, and configure members with real-time validation
 - **Team Configuration**: Create and manage team names with drag-and-drop support
-- **Score Scale Management**: Configurable player skill rating system (1-5 stars)
+- **Rating Scale Management**: Configurable member skill rating system (1-5 stars)
 - **Visual Results**: Beautiful formatted team generation results with balance analysis
 - **Configuration Save/Load**: Import and export team configurations in JSON format
 
@@ -43,7 +43,7 @@ A comprehensive Java 21 application for generating balanced football teams with 
 The application follows clean architecture principles with separated concerns:
 
 ```
-TeamMakerApp (CLI) → TeamMaker (Core Logic) → Team/Player (Domain)
+TeamMakerApp (CLI) → TeamMaker (Core Logic) → Team/Member (Domain)
                   ↓
             TeamResultFormatter (Presentation)
 ```
@@ -53,8 +53,8 @@ TeamMakerApp (CLI) → TeamMaker (Core Logic) → Team/Player (Domain)
 - **`TeamMaker`**: Core service for team generation and balancing
 - **`TeamMakerApp`**: CLI application using Picocli
 - **`TeamResultFormatter`**: Beautiful output formatting with colors and Unicode
-- **`Player`**: Record type representing a player with name and skill rating
-- **`Team`**: Domain model for teams with players and strength calculation
+- **`Player`**: Record type representing a member with name and skill rating
+- **`Team`**: Domain model for teams with members and rating calculation
 - **`JsonConfigLoader`**: Configuration management with validation
 
 ## 📦 Installation
@@ -124,7 +124,7 @@ The native binary will be created at `target/teammaker` (~15-30MB, platform-spec
 
 ### Quick Start
 
-Run with default players (20 players, 10 teams):
+Run with default members (20 members, 10 teams):
 
 ```bash
 java -jar futebol-1.0-SNAPSHOT.jar --default
@@ -213,14 +213,14 @@ java -jar futebol-1.0-SNAPSHOT.jar --default --verbose
 ║                      ⚽ TEAM DRAW RESULTS ⚽                     ║
 ╚══════════════════════════════════════════════════════════════════╝
 
-┌─ Team A ─────────────────────────────────────────────────────────
+┌── Team A 
 │ Strength: 7.5
 ├─ Players:
 │   • Bruno (4.0)
 │   • Carlos (3.5)
 └─────────────────────────────────────────────────────────────────
 
-┌─ Team B ─────────────────────────────────────────────────────────
+┌── Team B 
 │ Strength: 7.3
 ├─ Players:
 │   • Ana (4.2)
@@ -235,7 +235,7 @@ Strength Range: 7.1 - 7.7
 Max Difference: 0.6 ✅ WELL BALANCED!
 
 ╔══════════════════════════════════════════════════════════════════╗
-║                🏆 GOOD LUCK WITH YOUR MATCHES! 🏆               ║
+║               🏆 GOOD LUCK WITH YOUR MATCHES! 🏆                 ║
 ╚══════════════════════════════════════════════════════════════════╝
 ```
 
@@ -383,4 +383,4 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 
 ---
 
-**Enjoy creating balanced teams for your football matches! ⚽🏆**
+**Enjoy creating balanced teams for your activities! 👥🏆**
