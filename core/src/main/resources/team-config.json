@@ -1,0 +1,100 @@
+{
+  "scoreScale": {
+    "min": 1.0,
+    "max": 5.0
+  },
+  "teamNames": [
+    "Team A",
+    "Team B",
+    "Team C",
+    "Team D",
+    "Team E",
+    "Team F",
+    "Team G",
+    "Team H",
+    "Team I",
+    "Team J"
+  ],
+  "players": [
+    {
+      "name": "Alex",
+      "score": 3.0
+    },
+    {
+      "name": "Andre",
+      "score": 2.0
+    },
+    {
+      "name": "Augusto",
+      "score": 3.0
+    },
+    {
+      "name": "Bruno",
+      "score": 4.0
+    },
+    {
+      "name": "Diego",
+      "score": 3.0
+    },
+    {
+      "name": "Diogo",
+      "score": 4.0
+    },
+    {
+      "name": "Duda",
+      "score": 4.0
+    },
+    {
+      "name": "Felipe",
+      "score": 4.0
+    },
+    {
+      "name": "Guilhermo",
+      "score": 3.0
+    },
+    {
+      "name": "Jean",
+      "score": 3.0
+    },
+    {
+      "name": "Juan",
+      "score": 2.0
+    },
+    {
+      "name": "Leo",
+      "score": 4.0
+    },
+    {
+      "name": "Leonardo",
+      "score": 3.0
+    },
+    {
+      "name": "Lucio",
+      "score": 3.0
+    },
+    {
+      "name": "Marcelo",
+      "score": 3.0
+    },
+    {
+      "name": "Pedro",
+      "score": 3.0
+    },
+    {
+      "name": "Rafael",
+      "score": 3.0
+    },
+    {
+      "name": "Rodrigo",
+      "score": 4.0
+    },
+    {
+      "name": "Tiago",
+      "score": 3.0
+    },
+    {
+      "name": "Thiago",
+      "score": 2.0
+    }
+  ]
+}

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+   <modelVersion>4.0.0</modelVersion>
+   <artifactId>teammaker-gui</artifactId>
+   <packaging>jar</packaging>
+   <name>teammaker-gui</name>
+   <version>1.0-SNAPSHOT</version>
+
+   <parent>
+      <groupId>io.github.brunoborges</groupId>
+      <artifactId>teammaker-parent</artifactId>
+      <version>1.0-SNAPSHOT</version>
+      <relativePath>../pom.xml</relativePath>
+   </parent>
+
+   <properties>
+      <maven.compiler.source>21</maven.compiler.source>
+      <maven.compiler.target>21</maven.compiler.target>
+      <maven.compiler.release>21</maven.compiler.release>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <javafx.version>21.0.5</javafx.version>
+      <javafx.maven.plugin.version>0.0.8</javafx.maven.plugin.version>
+   </properties>
+
+   <dependencies>
+      <!-- Core TeamMaker dependency -->
+      <dependency>
+         <groupId>io.github.brunoborges</groupId>
+         <artifactId>teammaker-core</artifactId>
+         <version>1.0-SNAPSHOT</version>
+      </dependency>
+      
+      <!-- JavaFX dependencies -->
+      <dependency>
+         <groupId>org.openjfx</groupId>
+         <artifactId>javafx-controls</artifactId>
+         <version>${javafx.version}</version>
+      </dependency>
+      <dependency>
+         <groupId>org.openjfx</groupId>
+         <artifactId>javafx-fxml</artifactId>
+         <version>${javafx.version}</version>
+      </dependency>
+      
+      <!-- JSON processing (inherited from core) -->
+      <dependency>
+         <groupId>com.fasterxml.jackson.core</groupId>
+         <artifactId>jackson-databind</artifactId>
+         <version>2.19.2</version>
+      </dependency>
+      
+      <!-- Testing -->
+      <dependency>
+         <groupId>org.junit.jupiter</groupId>
+         <artifactId>junit-jupiter</artifactId>
+         <version>5.13.4</version>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <groupId>org.testfx</groupId>
+         <artifactId>testfx-junit5</artifactId>
+         <version>4.0.16-alpha</version>
+         <scope>test</scope>
+      </dependency>
+   </dependencies>
+
+   <build>
+      <plugins>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.14.1</version>
+            <configuration>
+               <source>21</source>
+               <target>21</target>
+               <release>21</release>
+            </configuration>
+         </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.5.4</version>
+         </plugin>
+         <plugin>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-maven-plugin</artifactId>
+            <version>${javafx.maven.plugin.version}</version>
+            <configuration>
+               <mainClass>io.github.brunoborges.teammaker.gui.TeamMakerFXApp</mainClass>
+            </configuration>
+         </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-shade-plugin</artifactId>
+            <version>3.6.1</version>
+            <executions>
+               <execution>
+                  <phase>package</phase>
+                  <goals>
+                     <goal>shade</goal>
+                  </goals>
+                  <configuration>
+                     <transformers>
+                        <transformer
+                           implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                           <mainClass>io.github.brunoborges.teammaker.gui.TeamMakerFXApp</mainClass>
+                        </transformer>
+                     </transformers>
+                     <createDependencyReducedPom>false</createDependencyReducedPom>
+                  </configuration>
+               </execution>
+            </executions>
+         </plugin>
+      </plugins>
+   </build>
+
+</project>

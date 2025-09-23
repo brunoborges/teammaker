@@ -1,0 +1,250 @@
+/* TeamMaker JavaFX Styles */
+
+.root {
+    -fx-background-color: #fafafa;
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* Tab Pane Styling */
+.tab-pane {
+    -fx-background-color: #ffffff;
+}
+
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-background-color: #e8f4f8;
+}
+
+.tab {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d3d3d3;
+    -fx-border-width: 1px 1px 0px 1px;
+    -fx-background-insets: 0;
+    -fx-padding: 8px 16px;
+}
+
+.tab:selected {
+    -fx-background-color: #4a90e2;
+    -fx-text-fill: white;
+}
+
+.tab:selected .tab-label {
+    -fx-text-fill: white;
+}
+
+/* Button Styling */
+.button {
+    -fx-background-color: #4a90e2;
+    -fx-text-fill: white;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-padding: 8px 16px;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #357abd;
+}
+
+.button:pressed {
+    -fx-background-color: #2968a3;
+}
+
+/* Primary action buttons */
+.button:default {
+    -fx-background-color: #28a745;
+    -fx-font-weight: bold;
+}
+
+.button:default:hover {
+    -fx-background-color: #218838;
+}
+
+/* Danger buttons */
+.button.danger {
+    -fx-background-color: #dc3545;
+}
+
+.button.danger:hover {
+    -fx-background-color: #c82333;
+}
+
+/* List View Styling */
+.list-view {
+    -fx-background-color: white;
+    -fx-border-color: #ddd;
+    -fx-border-radius: 4px;
+}
+
+.list-cell {
+    -fx-padding: 8px 12px;
+}
+
+.list-cell:selected {
+    -fx-background-color: #4a90e2;
+    -fx-text-fill: white;
+}
+
+.list-cell:odd {
+    -fx-background-color: #f9f9f9;
+}
+
+/* Text Field Styling */
+.text-field, .text-area {
+    -fx-border-color: #ddd;
+    -fx-border-radius: 4px;
+    -fx-padding: 8px;
+}
+
+.text-field:focused, .text-area:focused {
+    -fx-border-color: #4a90e2;
+    -fx-border-width: 2px;
+}
+
+/* Spinner Styling */
+.spinner {
+    -fx-border-color: #ddd;
+    -fx-border-radius: 4px;
+}
+
+.spinner:focused {
+    -fx-border-color: #4a90e2;
+    -fx-border-width: 2px;
+}
+
+/* Slider Styling */
+.slider .track {
+    -fx-background-color: #ddd;
+    -fx-background-radius: 4px;
+}
+
+.slider .thumb {
+    -fx-background-color: #4a90e2;
+    -fx-background-radius: 10px;
+}
+
+.slider .thumb:pressed {
+    -fx-background-color: #357abd;
+}
+
+/* Menu Bar Styling */
+.menu-bar {
+    -fx-background-color: #f8f9fa;
+    -fx-border-color: #dee2e6;
+    -fx-border-width: 0 0 1px 0;
+}
+
+/* Section Headers */
+.label {
+    -fx-text-fill: #333;
+}
+
+.section-header {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+    -fx-padding: 0 0 10px 0;
+}
+
+/* Results Area */
+.results-area {
+    -fx-background-color: #2d3748;
+    -fx-text-fill: #e2e8f0;
+    -fx-font-family: "Consolas", "Monaco", "Courier New", monospace;
+    -fx-font-size: 11px;
+    -fx-padding: 15px;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+}
+
+/* Status Bar */
+.status-bar {
+    -fx-background-color: #f8f9fa;
+    -fx-border-color: #dee2e6;
+    -fx-border-width: 1px 0 0 0;
+    -fx-padding: 5px 10px;
+}
+
+/* Card-like containers */
+.config-section {
+    -fx-background-color: white;
+    -fx-border-color: #e9ecef;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 20px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 4, 0, 0, 2);
+}
+
+/* Alert dialogs */
+.alert {
+    -fx-background-color: white;
+}
+
+.alert .header-panel {
+    -fx-background-color: #4a90e2;
+}
+
+.alert .header-panel .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+/* Tooltips */
+.tooltip {
+    -fx-background-color: rgba(0, 0, 0, 0.8);
+    -fx-text-fill: white;
+    -fx-background-radius: 4px;
+    -fx-font-size: 12px;
+    -fx-padding: 5px 8px;
+}
+
+/* Hover effects for interactive elements */
+.list-cell:hover {
+    -fx-background-color: #e3f2fd;
+}
+
+.button:hover {
+    -fx-scale-y: 1.02;
+    -fx-scale-x: 1.02;
+}
+
+/* Focus indicators */
+.button:focused {
+    -fx-border-color: #4a90e2;
+    -fx-border-width: 2px;
+    -fx-border-radius: 4px;
+}
+
+/* Disabled state */
+.button:disabled {
+    -fx-opacity: 0.6;
+    -fx-cursor: default;
+}
+
+/* Error styling */
+.text-field.error, .text-area.error {
+    -fx-border-color: #dc3545;
+    -fx-border-width: 2px;
+}
+
+/* Success styling */
+.text-field.success, .text-area.success {
+    -fx-border-color: #28a745;
+    -fx-border-width: 2px;
+}
+
+/* Progress indicator styling */
+.progress-indicator {
+    -fx-progress-color: #4a90e2;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 800px) {
+    .root {
+        -fx-font-size: 14px;
+    }
+    
+    .button {
+        -fx-padding: 6px 12px;
+        -fx-font-size: 12px;
+    }
+}

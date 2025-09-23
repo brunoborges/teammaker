@@ -4,18 +4,39 @@
 [![Maven](https://img.shields.io/badge/Maven-3.9+-blue.svg)](https://maven.apache.org/)
 [![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Tests](https://img.shields.io/badge/Tests-57%20passing-brightgreen.svg)](#testing)
+[![JavaFX](https://img.shields.io/badge/JavaFX-21.0.5-blue.svg)](https://openjfx.io/)
+[![GraalVM](https://img.shields.io/badge/GraalVM-Native%20Image-red.svg)](https://www.graalvm.org/)
 
-A modern Java 21 application that generates balanced football teams from a list of players, featuring beautiful console output, JSON configuration support, and professional CLI interface.
+A comprehensive Java 21 application for generating balanced football teams with both command-line interface and JavaFX GUI, featuring GraalVM Native Image support for ultra-fast startup.
 
-## 🌟 Features
+## 🚀 Features
 
+### Core Functionality
+- **Smart Team Balancing**: Advanced algorithm to create balanced teams based on player skills
+- **Multiple Interfaces**: Both CLI and JavaFX GUI available
+- **Configuration Management**: Save and load team configurations from JSON files
+- **GraalVM Native Image**: Lightning-fast startup (17ms) with 51MB executable
+
+### Command Line Interface (CLI)
 - **⚖️ Smart Team Balancing**: Automatically distributes players to create balanced teams based on skill ratings
 - **🎨 Beautiful Output**: Colorful console output with Unicode box-drawing characters and emojis
 - **📋 Flexible Input**: Support for JSON configuration files or built-in default players
 - **🔧 Professional CLI**: Command-line interface powered by Picocli with comprehensive help
 - **📊 Statistics**: Team strength analysis with balance indicators
-- **✅ Comprehensive Validation**: Ensures player count is divisible by team count
-- **🚀 Production Ready**: Single fat JAR deployment with all dependencies included
+
+### Graphical User Interface (GUI)
+- **Modern JavaFX Interface**: Clean, intuitive design with custom styling
+- **Player Management**: Add, edit, remove, and configure players with real-time validation
+- **Team Configuration**: Create and manage team names with drag-and-drop support
+- **Score Scale Management**: Configurable player skill rating system (1-5 stars)
+- **Visual Results**: Beautiful formatted team generation results with balance analysis
+- **Configuration Save/Load**: Import and export team configurations in JSON format
+
+### Native Image Support
+- **Ultra-Fast Startup**: ~17ms startup time (vs ~2s JVM)
+- **Small Memory Footprint**: ~30MB RSS (vs ~200MB JVM)
+- **Self-Contained Binary**: 51MB executable with no JVM dependency
+- **Intelligent Build Script**: Automatic SDKMAN and GraalVM detection and setup
 
 ## 🏗️ Architecture
 
