@@ -55,7 +55,7 @@ public class TeamMaker {
 		double totalStrength = 0;
 
 		for (Player p : players) {
-			totalStrength += p.getStrength();
+			totalStrength += p.score();
 		}
 
 		averageStrength = totalStrength / players.size();
@@ -92,8 +92,8 @@ public class TeamMaker {
 		double maximumStrength = Double.MIN_VALUE;
 
 		for (Team team : teams) {
-			minimumStrength = Math.min(team.getStrength(), minimumStrength);
-			maximumStrength = Math.max(team.getStrength(), maximumStrength);
+			minimumStrength = Math.min(team.getScore(), minimumStrength);
+			maximumStrength = Math.max(team.getScore(), maximumStrength);
 		}
 
 		return !(minimumStrength < 0.7 * maximumStrength);
@@ -112,7 +112,7 @@ public class TeamMaker {
 			}
 
 			Player p = getPlayer(currentTeam);
-			currentTeam.addPlayer(p);
+			currentTeam.add(p);
 
 			if (itTeam.hasNext() == false) {
 				itTeam = teams.iterator();
@@ -130,7 +130,7 @@ public class TeamMaker {
 		Iterator<Player> it = players.iterator();
 		while (it.hasNext()) {
 			Player p = it.next();
-			if (p.getStrength() == strength) {
+			if (p.score() == strength) {
 				player = p;
 				break;
 			}
@@ -145,7 +145,7 @@ public class TeamMaker {
 	private static Player getPlayer(Team currentTeam) {
 		double weight = Math.random();
 
-		if (currentTeam.getStrength() < averageStrength) {
+		if (currentTeam.getScore() < averageStrength) {
 			weight += Math.random();
 		} else {
 			weight -= Math.random();

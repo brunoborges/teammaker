@@ -66,9 +66,9 @@ class TeamMakerTest {
         assertEquals(20, players.size());
         
         // Check some specific players
-        assertTrue(players.stream().anyMatch(p -> p.getName().equals("Bruno Borges")));
-        assertTrue(players.stream().anyMatch(p -> p.getName().equals("Alex Souza")));
-        assertTrue(players.stream().anyMatch(p -> p.getName().equals("Leo Soares")));
+        assertTrue(players.stream().anyMatch(p -> p.name().equals("Bruno Borges")));
+        assertTrue(players.stream().anyMatch(p -> p.name().equals("Alex Souza")));
+        assertTrue(players.stream().anyMatch(p -> p.name().equals("Leo Soares")));
     }
 
     @Test
@@ -137,12 +137,12 @@ class TeamMakerTest {
         teams.clear();
         
         Team team1 = new Team("Team A", 2);
-        team1.addPlayer(new Player("Player 1", 3.0));
-        team1.addPlayer(new Player("Player 2", 3.0));
+        team1.add(new Player("Player 1", 3.0));
+        team1.add(new Player("Player 2", 3.0));
         
         Team team2 = new Team("Team B", 2);
-        team2.addPlayer(new Player("Player 3", 3.0));
-        team2.addPlayer(new Player("Player 4", 3.0));
+        team2.add(new Player("Player 3", 3.0));
+        team2.add(new Player("Player 4", 3.0));
         
         teams.add(team1);
         teams.add(team2);
@@ -169,13 +169,13 @@ class TeamMakerTest {
         teams.clear();
         
         Team strongTeam = new Team("Strong Team", 2);
-        strongTeam.addPlayer(new Player("Strong Player 1", 5.0));
-        strongTeam.addPlayer(new Player("Strong Player 2", 5.0));
+        strongTeam.add(new Player("Strong Player 1", 5.0));
+        strongTeam.add(new Player("Strong Player 2", 5.0));
         // Total: 10.0
         
         Team weakTeam = new Team("Weak Team", 2);
-        weakTeam.addPlayer(new Player("Weak Player 1", 1.0));
-        weakTeam.addPlayer(new Player("Weak Player 2", 1.0));
+        weakTeam.add(new Player("Weak Player 1", 1.0));
+        weakTeam.add(new Player("Weak Player 2", 1.0));
         // Total: 2.0
         
         teams.add(strongTeam);

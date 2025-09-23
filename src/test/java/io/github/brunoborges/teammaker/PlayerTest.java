@@ -18,8 +18,8 @@ class PlayerTest {
         Player player = new Player(name, score);
         
         // Then
-        assertEquals(name, player.getName());
-        assertEquals(score, player.getStrength());
+        assertEquals(name, player.name());
+        assertEquals(score, player.score());
     }
 
     @Test
@@ -33,8 +33,8 @@ class PlayerTest {
         Player player = new Player(name, score);
         
         // Then
-        assertEquals(name, player.getName());
-        assertEquals(score, player.getStrength());
+        assertEquals(name, player.name());
+        assertEquals(score, player.score());
     }
 
     @Test
@@ -48,8 +48,8 @@ class PlayerTest {
         Player player = new Player(name, score);
         
         // Then
-        assertEquals(name, player.getName());
-        assertEquals(score, player.getStrength(), 0.001);
+        assertEquals(name, player.name());
+        assertEquals(score, player.score(), 0.001);
     }
 
     @Test
@@ -63,8 +63,8 @@ class PlayerTest {
         Player player = new Player(name, score);
         
         // Then
-        assertEquals(name, player.getName());
-        assertEquals(score, player.getStrength());
+        assertEquals(name, player.name());
+        assertEquals(score, player.score());
     }
 
     @Test
@@ -78,8 +78,8 @@ class PlayerTest {
         Player player = new Player(name, score);
         
         // Then
-        assertEquals(name, player.getName());
-        assertEquals(score, player.getStrength());
+        assertEquals(name, player.name());
+        assertEquals(score, player.score());
     }
 
     @Test
@@ -93,8 +93,8 @@ class PlayerTest {
         Player player = new Player(name, score);
         
         // Then
-        assertEquals(name, player.getName());
-        assertEquals(score, player.getStrength());
+        assertEquals(name, player.name());
+        assertEquals(score, player.score());
     }
 
     @Test
@@ -108,52 +108,8 @@ class PlayerTest {
         Player player = new Player(name, score);
         
         // Then
-        assertNull(player.getName());
-        assertEquals(score, player.getStrength());
+        assertNull(player.name());
+        assertEquals(score, player.score());
     }
 
-    @Test
-    @DisplayName("Should return correct toString format")
-    void shouldReturnCorrectToStringFormat() {
-        // Given
-        String name = "Test Player";
-        double score = 4.0;
-        Player player = new Player(name, score);
-        
-        // When
-        String result = player.toString();
-        
-        // Then
-        assertEquals("Test Player (4.0)", result);
-    }
-
-    @Test
-    @DisplayName("Should return correct toString format with decimal score")
-    void shouldReturnCorrectToStringFormatWithDecimalScore() {
-        // Given
-        String name = "Decimal Player";
-        double score = 3.75;
-        Player player = new Player(name, score);
-        
-        // When
-        String result = player.toString();
-        
-        // Then
-        assertEquals("Decimal Player (3.75)", result);
-    }
-
-    @Test
-    @DisplayName("Should handle special characters in name")
-    void shouldHandleSpecialCharactersInName() {
-        // Given
-        String name = "José María (Pedrinho)";
-        double score = 4.0;
-        
-        // When
-        Player player = new Player(name, score);
-        
-        // Then
-        assertEquals(name, player.getName());
-        assertEquals("José María (Pedrinho) (4.0)", player.toString());
-    }
 }

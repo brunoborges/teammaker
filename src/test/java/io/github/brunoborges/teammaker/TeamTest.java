@@ -33,7 +33,7 @@ class TeamTest {
         
         // Then
         assertEquals(teamName, newTeam.getName());
-        assertEquals(0, newTeam.getStrength());
+        assertEquals(0, newTeam.getScore());
         assertFalse(newTeam.isComplete());
     }
 
@@ -42,17 +42,17 @@ class TeamTest {
     void shouldNotBeCompleteWhenCreated() {
         // Then
         assertFalse(team.isComplete());
-        assertEquals(0, team.getStrength());
+        assertEquals(0, team.getScore());
     }
 
     @Test
     @DisplayName("Should add player and update strength")
     void shouldAddPlayerAndUpdateStrength() {
         // When
-        team.addPlayer(player1);
+        team.add(player1);
         
         // Then
-        assertEquals(3, team.getStrength());
+        assertEquals(3, team.getScore());
         assertFalse(team.isComplete());
     }
 
@@ -60,25 +60,25 @@ class TeamTest {
     @DisplayName("Should be complete when player limit is reached")
     void shouldBeCompleteWhenPlayerLimitIsReached() {
         // When
-        team.addPlayer(player1);
-        team.addPlayer(player2);
+        team.add(player1);
+        team.add(player2);
         
         // Then
         assertTrue(team.isComplete());
-        assertEquals(7, team.getStrength()); // 3.0 + 4.0
+        assertEquals(7, team.getScore()); // 3.0 + 4.0
     }
 
     @Test
     @DisplayName("Should throw exception when adding player to complete team")
     void shouldThrowExceptionWhenAddingPlayerToCompleteTeam() {
         // Given
-        team.addPlayer(player1);
-        team.addPlayer(player2);
+        team.add(player1);
+        team.add(player2);
         assertTrue(team.isComplete());
         
         // When & Then
         IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
-            team.addPlayer(player3);
+            team.add(player3);
         });
         assertEquals("Team 'Test Team' is already complete", exception.getMessage());
     }
@@ -87,27 +87,27 @@ class TeamTest {
     @DisplayName("Should calculate total strength correctly")
     void shouldCalculateTotalStrengthCorrectly() {
         // When
-        team.addPlayer(new Player("Strong Player", 5.0));
-        team.addPlayer(new Player("Weak Player", 1.5));
+        team.add(new Player("Strong Player", 5.0));
+        team.add(new Player("Weak Player", 1.5));
         
         // Then
-        assertEquals(6.5, team.getStrength(), 0.001);
+        assertEquals(6.5, team.getScore(), 0.001);
     }
 
     @Test
     @DisplayName("Should reset team properly")
     void shouldResetTeamProperly() {
         // Given
-        team.addPlayer(player1);
-        team.addPlayer(player2);
+        team.add(player1);
+        team.add(player2);
         assertTrue(team.isComplete());
-        assertEquals(7, team.getStrength());
+        assertEquals(7, team.getScore());
         
         // When
         team.reset();
         
         // Then
-        assertEquals(0, team.getStrength());
+        assertEquals(0, team.getScore());
         assertFalse(team.isComplete());
     }
 
@@ -118,11 +118,11 @@ class TeamTest {
         Team singlePlayerTeam = new Team("Solo Team", 1);
         
         // When
-        singlePlayerTeam.addPlayer(player1);
+        singlePlayerTeam.add(player1);
         
         // Then
         assertTrue(singlePlayerTeam.isComplete());
-        assertEquals(3, singlePlayerTeam.getStrength());
+        assertEquals(3, singlePlayerTeam.getScore());
     }
 
     @Test
@@ -132,19 +132,19 @@ class TeamTest {
         Team largeTeam = new Team("Large Team", 5);
         
         // When
-        largeTeam.addPlayer(new Player("P1", 1.0));
-        largeTeam.addPlayer(new Player("P2", 2.0));
-        largeTeam.addPlayer(new Player("P3", 3.0));
-        largeTeam.addPlayer(new Player("P4", 4.0));
+        largeTeam.add(new Player("P1", 1.0));
+        largeTeam.add(new Player("P2", 2.0));
+        largeTeam.add(new Player("P3", 3.0));
+        largeTeam.add(new Player("P4", 4.0));
         
         // Then
         assertFalse(largeTeam.isComplete());
-        assertEquals(10, largeTeam.getStrength());
+        assertEquals(10, largeTeam.getScore());
         
         // Add final player
-        largeTeam.addPlayer(new Player("P5", 5.0));
+        largeTeam.add(new Player("P5", 5.0));
         assertTrue(largeTeam.isComplete());
-        assertEquals(15, largeTeam.getStrength());
+        assertEquals(15, largeTeam.getScore());
     }
 
     @Test
@@ -163,8 +163,8 @@ class TeamTest {
     @DisplayName("Should return correct toString format for team with players")
     void shouldReturnCorrectToStringFormatForTeamWithPlayers() {
         // Given
-        team.addPlayer(player1);
-        team.addPlayer(player2);
+        team.add(player1);
+        team.add(player2);
         
         // When
         String result = team.toString();
@@ -185,11 +185,11 @@ class TeamTest {
         Player zeroPlayer = new Player("Zero Player", 0.0);
         
         // When
-        team.addPlayer(zeroPlayer);
-        team.addPlayer(player1);
+        team.add(zeroPlayer);
+        team.add(player1);
         
         // Then
-        assertEquals(3, team.getStrength());
+        assertEquals(3, team.getScore());
         assertTrue(team.isComplete());
     }
 
@@ -200,11 +200,11 @@ class TeamTest {
         Player negativePlayer = new Player("Negative Player", -2.0);
         
         // When
-        team.addPlayer(negativePlayer);
-        team.addPlayer(player1);
+        team.add(negativePlayer);
+        team.add(player1);
         
         // Then
-        assertEquals(1, team.getStrength()); // -2.0 + 3.0 = 1.0
+        assertEquals(1, team.getScore()); // -2.0 + 3.0 = 1.0
         assertTrue(team.isComplete());
     }
 
@@ -219,7 +219,7 @@ class TeamTest {
         
         // When & Then
         IllegalStateException exception = assertThrows(IllegalStateException.class, () -> {
-            emptyTeam.addPlayer(player1);
+            emptyTeam.add(player1);
         });
         assertEquals("Team 'Empty Team' is already complete", exception.getMessage());
     }
@@ -228,19 +228,19 @@ class TeamTest {
     @DisplayName("Should maintain state after multiple resets")
     void shouldMaintainStateAfterMultipleResets() {
         // Given
-        team.addPlayer(player1);
-        team.addPlayer(player2);
+        team.add(player1);
+        team.add(player2);
         
         // When
         team.reset();
         team.reset(); // Double reset
         
         // Then
-        assertEquals(0, team.getStrength());
+        assertEquals(0, team.getScore());
         assertFalse(team.isComplete());
         
         // Should be able to add players again
-        team.addPlayer(player3);
-        assertEquals(2, team.getStrength());
+        team.add(player3);
+        assertEquals(2, team.getScore());
     }
 }
