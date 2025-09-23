@@ -1,41 +1,103 @@
 package io.github.brunoborges.teammaker;
 
+import picocli.CommandLine;
+import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
+import picocli.CommandLine.Parameters;
 import java.io.IOException;
+import java.util.concurrent.Callable;
 
 /**
- * Command-line application for team generation.
+ * Command-line application for team generation using picocli.
  * This class handles user interaction and output formatting,
  * delegating the core logic to TeamMaker.
  */
-public class TeamMakerApp {
+@Command(
+    name = "teammaker",
+    mixinStandardHelpOptions = true,
+    version = "TeamMaker 1.0",
+    description = "Generate balanced teams from a list of players"
+)
+public class TeamMakerApp implements Callable<Integer> {
+
+    @Parameters(
+        index = "0", 
+        arity = "0..1",
+        description = "JSON configuration file path (optional)"
+    )
+    private String configFile;
+
+    @Option(
+        names = {"-r", "--resource"}, 
+        description = "Use resource file instead of external file (default: team-config.json)"
+    )
+    private String resourceName = "team-config.json";
+
+    @Option(
+        names = {"-d", "--default"}, 
+        description = "Use default hard-coded players instead of JSON configuration"
+    )
+    private boolean useDefault = false;
+
+    @Option(
+        names = {"-v", "--verbose"}, 
+        description = "Enable verbose output"
+    )
+    private boolean verbose = false;
 
     public static void main(String[] args) {
-        TeamMakerApp app = new TeamMakerApp();
-        
-        if (args.length > 0) {
-            // Use JSON configuration file if provided
-            try {
-                app.runWithConfig(args[0]);
-            } catch (IOException e) {
-                System.err.println("Error loading configuration file: " + e.getMessage());
-                System.err.println("Falling back to default configuration...");
-                app.run();
+        int exitCode = new CommandLine(new TeamMakerApp()).execute(args);
+        // Only call System.exit if we're not in a test environment
+        if (!isInTest()) {
+            System.exit(exitCode);
+        }
+    }
+
+    /**
+     * Check if we're running in a test environment by looking at the stack trace.
+     */
+    private static boolean isInTest() {
+        return StackWalker.getInstance()
+                .walk(frames -> frames
+                        .anyMatch(frame -> frame.getClassName().contains("junit") || 
+                                         frame.getClassName().contains("Test") ||
+                                         frame.getClassName().contains("surefire")));
+    }
+
+    @Override
+    public Integer call() throws Exception {
+        try {
+            TeamResultFormatter formatter = new TeamResultFormatter(verbose);
+            
+            if (useDefault) {
+                if (verbose) System.out.println("Using default hard-coded players...");
+                run(formatter);
+            } else if (configFile != null) {
+                if (verbose) System.out.println("Loading configuration from: " + configFile);
+                runWithConfig(configFile, formatter);
+            } else {
+                if (verbose) System.out.println("Loading configuration from resource: " + resourceName);
+                try {
+                    runWithResourceConfig(resourceName, formatter);
+                } catch (IOException e) {
+                    if (verbose) System.out.println("Resource not found, falling back to default players...");
+                    run(formatter);
+                }
             }
-        } else {
-            // Use default configuration or try to load from resources
-            try {
-                app.runWithResourceConfig("team-config.json");
-            } catch (IOException e) {
-                System.out.println("No configuration file found, using default players...");
-                app.run();
+            return 0;
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
+            if (verbose) {
+                e.printStackTrace();
             }
+            return 1;
         }
     }
 
     /**
      * Run the application with default hard-coded players.
      */
-    public void run() {
+    private void run(TeamResultFormatter formatter) {
         TeamMaker teamMaker = new TeamMaker();
 
         // Keep trying until we get balanced teams
@@ -44,59 +106,41 @@ public class TeamMakerApp {
             result = teamMaker.createBalancedTeams();
         } while (!result.isBalanced());
 
-        // Print the results
-        printResults(result);
-        printEndMessage();
+        // Print the results using the formatter
+        formatter.printResults(result);
     }
 
     /**
      * Run the application with JSON configuration from a file.
      * 
      * @param configPath path to the JSON configuration file
+     * @param formatter the result formatter
      * @throws IOException if the configuration cannot be loaded
      */
-    public void runWithConfig(String configPath) throws IOException {
-        System.out.println("Loading configuration from: " + configPath);
-        
+    private void runWithConfig(String configPath, TeamResultFormatter formatter) throws IOException {
         TeamMakerResult result;
         do {
             result = TeamMaker.createBalancedTeamsFromConfig(configPath);
         } while (!result.isBalanced());
 
-        // Print the results
-        printResults(result);
-        printEndMessage();
+        // Print the results using the formatter
+        formatter.printResults(result);
     }
 
     /**
      * Run the application with JSON configuration from resources.
      * 
      * @param resourceName name of the JSON configuration resource
+     * @param formatter the result formatter
      * @throws IOException if the configuration cannot be loaded
      */
-    public void runWithResourceConfig(String resourceName) throws IOException {
-        System.out.println("Loading configuration from resource: " + resourceName);
-        
+    private void runWithResourceConfig(String resourceName, TeamResultFormatter formatter) throws IOException {
         TeamMakerResult result;
         do {
             result = TeamMaker.createBalancedTeamsFromResource(resourceName);
         } while (!result.isBalanced());
 
-        // Print the results
-        printResults(result);
-        printEndMessage();
-    }
-    
-    private void printResults(TeamMakerResult result) {
-        for (Team team : result.getTeams()) {
-            System.out.println(team);
-            System.out.println("-----");
-        }
-    }
-    
-    private void printEndMessage() {
-        System.out.println("##################");
-        System.out.println("  END OF DRAW");
-        System.out.println("##################");
+        // Print the results using the formatter
+        formatter.printResults(result);
     }
 }

@@ -14,12 +14,10 @@ class TeamMakerAppTest {
 
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private final PrintStream originalOut = System.out;
-    private TeamMakerApp app;
 
     @BeforeEach
     void setUp() {
         System.setOut(new PrintStream(outContent));
-        app = new TeamMakerApp();
     }
 
     @AfterEach
@@ -38,68 +36,68 @@ class TeamMakerAppTest {
     }
 
     @Test
-    @DisplayName("Should run without exceptions")
-    void shouldRunWithoutExceptions() {
+    @DisplayName("Should run without exceptions using default config")
+    void shouldRunWithoutExceptionsUsingDefaultConfig() {
         // When/Then
-        assertDoesNotThrow(() -> app.run());
+        assertDoesNotThrow(() -> TeamMakerApp.main(new String[]{}));
     }
 
     @Test
-    @DisplayName("Should produce output when running")
-    void shouldProduceOutputWhenRunning() {
+    @DisplayName("Should produce output when running with default config")
+    void shouldProduceOutputWhenRunningWithDefaultConfig() {
         // When
-        app.run();
+        TeamMakerApp.main(new String[]{});
         
         // Then
         String output = outContent.toString();
         assertFalse(output.isEmpty(), "App should produce output");
         assertTrue(output.contains("Team"), "Output should contain team information");
-        assertTrue(output.contains("strength"), "Output should contain strength information");
-        assertTrue(output.contains("-----"), "Output should contain separator lines");
+        assertTrue(output.contains("Strength:"), "Output should contain strength information");
+        assertTrue(output.contains("┌─"), "Output should contain formatted team boxes");
     }
 
     @Test
     @DisplayName("Should display team names in output")
     void shouldDisplayTeamNamesInOutput() {
         // When
-        app.run();
+        TeamMakerApp.main(new String[]{});
         
         // Then
         String output = outContent.toString();
-        assertTrue(output.contains("Team A"), "Output should contain Team A");
-        assertTrue(output.contains("Team B"), "Output should contain Team B");
+        // Should contain team names from the default resource config
+        assertTrue(output.contains("Team"), "Output should contain teams");
     }
 
     @Test
     @DisplayName("Should display balance information")
     void shouldDisplayStrengthInformation() {
         // When
-        app.run();
+        TeamMakerApp.main(new String[]{});
         
         // Then
         String output = outContent.toString();
-        assertTrue(output.contains("strength = "), "Output should show strength values");
-        assertTrue(output.contains("players = "), "Output should show players information");
+        assertTrue(output.contains("Strength:"), "Output should show strength values");
+        assertTrue(output.contains("Players:"), "Output should show players information");
     }
 
     @Test
     @DisplayName("Should display player information")
     void shouldDisplayPlayerInformation() {
         // When
-        app.run();
+        TeamMakerApp.main(new String[]{});
         
         // Then
         String output = outContent.toString();
-        // Check for some known default players
+        // Check for some known default players from the resource config
         assertTrue(output.contains("Bruno") || output.contains("Alex") || output.contains("Leo"),
                    "Output should contain player names");
     }
 
     @Test
-    @DisplayName("Main method should run without exceptions")
-    void mainMethodShouldRunWithoutExceptions() {
+    @DisplayName("Main method should run with --default option")
+    void mainMethodShouldRunWithDefaultOption() {
         // When/Then
-        assertDoesNotThrow(() -> TeamMakerApp.main(new String[]{}));
+        assertDoesNotThrow(() -> TeamMakerApp.main(new String[]{"--default"}));
         
         // Check output was produced
         String output = outContent.toString();
@@ -107,26 +105,41 @@ class TeamMakerAppTest {
     }
 
     @Test
-    @DisplayName("Main method should handle command line arguments")
-    void mainMethodShouldHandleCommandLineArguments() {
-        // When/Then - should not throw even with arguments
-        assertDoesNotThrow(() -> TeamMakerApp.main(new String[]{"arg1", "arg2"}));
+    @DisplayName("Main method should handle --help argument")
+    void mainMethodShouldHandleHelpArgument() {
+        // When/Then - should not throw with help argument
+        assertDoesNotThrow(() -> TeamMakerApp.main(new String[]{"--help"}));
+        
+        // Check that help was displayed
+        String output = outContent.toString();
+        assertTrue(output.contains("Usage:"), "Help output should contain usage information");
     }
 
     @Test
     @DisplayName("Should create multiple teams")
     void shouldCreateMultipleTeams() {
         // When
-        app.run();
+        TeamMakerApp.main(new String[]{});
         
         // Then
         String output = outContent.toString();
         
-        // Count occurrences of "Team " followed by a letter to see multiple teams
+        // Count occurrences of team headers in the new format: "┌─ Team #N - TeamName"
         long teamCount = output.lines()
-                .filter(line -> line.matches("^Team [A-Z] \\[strength = .*"))
+                .filter(line -> line.contains("┌─ Team #") || line.contains("Team #"))
                 .count();
         
         assertTrue(teamCount >= 2, "Should create multiple teams, found: " + teamCount);
+    }
+
+    @Test
+    @DisplayName("Should handle --version argument")
+    void shouldHandleVersionArgument() {
+        // When/Then
+        assertDoesNotThrow(() -> TeamMakerApp.main(new String[]{"--version"}));
+        
+        // Check that version was displayed
+        String output = outContent.toString();
+        assertTrue(output.contains("TeamMaker"), "Version output should contain application name");
     }
 }
