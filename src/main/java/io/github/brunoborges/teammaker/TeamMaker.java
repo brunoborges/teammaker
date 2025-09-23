@@ -6,52 +6,68 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Service class responsible for creating balanced teams from a list of players.
+ * This class contains the core team-making logic without any UI concerns.
+ */
 public class TeamMaker {
 
-	static final int PLAYERS_PER_TEAM = 2;
-	static List<Player> players = new ArrayList<Player>();
-	static List<Team> teams = new ArrayList<Team>();
-	static char[] alphabet = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q',
+	private static final int PLAYERS_PER_TEAM = 2;
+	private static final char[] ALPHABET = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O',
+			'P', 'Q',
 			'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
 
-	private static double averageStrength;
+	private List<Player> players;
+	private List<Team> teams;
+	private double averageStrength;
 
-	private static void initializePlayers() {
+	public TeamMaker() {
+		this.players = new ArrayList<>();
+		this.teams = new ArrayList<>();
+	}
+
+	/**
+	 * Creates balanced teams using the default player list.
+	 * 
+	 * @return TeamMakerResult containing the teams and balance information
+	 */
+	public TeamMakerResult createBalancedTeams() {
+		return createBalancedTeams(DefaultPlayers.get());
+	}
+
+	/**
+	 * Creates balanced teams from the provided list of players.
+	 * 
+	 * @param playerList the list of players to organize into teams
+	 * @return TeamMakerResult containing the teams and balance information
+	 */
+	public TeamMakerResult createBalancedTeams(List<Player> playerList) {
+		initializePlayers(playerList);
+		prepareTeams();
+		assembleTeams();
+
+		boolean balanced = calculateBalance();
+		double minStrength = teams.stream().mapToDouble(Team::getScore).min().orElse(0);
+		double maxStrength = teams.stream().mapToDouble(Team::getScore).max().orElse(0);
+
+		return new TeamMakerResult(new ArrayList<>(teams), balanced, minStrength, maxStrength);
+	}
+
+	private void initializePlayers(List<Player> playerList) {
 		players.clear();
-
-		players.add(new Player("Alex Souza", 3));
-		players.add(new Player("Andre Guedes", 2));
-		players.add(new Player("Augusto Nesser (Caixetinha)", 3));
-		players.add(new Player("Bruno Borges", 4));
-		players.add(new Player("Diego Berardino", 3));
-		players.add(new Player("Diogo Goncalves", 4));
-		players.add(new Player("Diogo Maximo", 4));
-		players.add(new Player("Felipe Magela", 4));
-		players.add(new Player("Guilhermo Reid", 3));
-		players.add(new Player("Jean Pereira", 3));
-		players.add(new Player("Juan Garay", 2));
-		players.add(new Player("Leo Soares", 4));
-		players.add(new Player("Leonardo Pinto", 3));
-		players.add(new Player("LLucio Simoes", 3));
-		players.add(new Player("Marcelo Behera", 3));
-		players.add(new Player("Pedro Barros", 3));
-		players.add(new Player("Rafael Coutinho", 3));
-		players.add(new Player("Rodrigo Caixeta", 4));
-		players.add(new Player("Tiago Barros (pedrinho)", 3));
-		players.add(new Player("Tiago Carpanese", 2));
-
+		players.addAll(playerList);
 		calculateAverage();
 	}
 
-	private static void prepareTeams() {
+	private void prepareTeams() {
 		teams.clear();
 		int totalTeams = players.size() / PLAYERS_PER_TEAM;
 		for (int i = 0; i < totalTeams; i++) {
-			teams.add(new Team("Team " + alphabet[i], PLAYERS_PER_TEAM));
+			teams.add(new Team("Team " + ALPHABET[i], PLAYERS_PER_TEAM));
 		}
 	}
 
-	private static void calculateAverage() {
+	private void calculateAverage() {
 		double totalStrength = 0;
 
 		for (Player p : players) {
@@ -61,33 +77,7 @@ public class TeamMaker {
 		averageStrength = totalStrength / players.size();
 	}
 
-	public static void main(String[] args) {
-		do {
-			initializePlayers();
-			prepareTeams();
-			assembleTeams();
-		} while (!calculateBalance());
-
-		printTeams();
-
-		System.out.println("##################");
-		System.out.println("  END OF DRAW");
-		System.out.println("##################");
-	}
-
-	private static void printTeams() {
-		for (Team team : teams) {
-			System.out.println(team);
-			System.out.println("-----");
-
-			try {
-				Thread.sleep(new Random().nextInt(3000));
-			} catch (InterruptedException e) {
-			}
-		}
-	}
-
-	private static boolean calculateBalance() {
+	private boolean calculateBalance() {
 		double minimumStrength = Double.MAX_VALUE;
 		double maximumStrength = Double.MIN_VALUE;
 
@@ -99,13 +89,23 @@ public class TeamMaker {
 		return !(minimumStrength < 0.7 * maximumStrength);
 	}
 
-	private static void assembleTeams() {
+	private void assembleTeams() {
 		// Randomize the list of players
 		Collections.shuffle(players, new Random(System.currentTimeMillis()));
 		Collections.shuffle(teams, new Random(System.currentTimeMillis()));
 
 		Iterator<Team> itTeam = teams.iterator();
 		while (players.size() > 0) {
+			if (!itTeam.hasNext()) {
+				// Check if any teams can still accept players
+				boolean anyIncompleteTeam = teams.stream().anyMatch(team -> !team.isComplete());
+				if (!anyIncompleteTeam) {
+					// All teams are complete, but we have remaining players
+					break;
+				}
+				itTeam = teams.iterator();
+			}
+
 			Team currentTeam = itTeam.next();
 			if (currentTeam.isComplete()) {
 				continue;
@@ -113,14 +113,10 @@ public class TeamMaker {
 
 			Player p = getPlayer(currentTeam);
 			currentTeam.add(p);
-
-			if (itTeam.hasNext() == false) {
-				itTeam = teams.iterator();
-			}
 		}
 	}
 
-	private static Player getPlayer(double strength) {
+	private Player getPlayer(double strength) {
 		Player player = null;
 		if (players.size() == 0)
 			return null;
@@ -142,7 +138,7 @@ public class TeamMaker {
 		return player;
 	}
 
-	private static Player getPlayer(Team currentTeam) {
+	private Player getPlayer(Team currentTeam) {
 		double weight = Math.random();
 
 		if (currentTeam.getScore() < averageStrength) {
@@ -175,5 +171,4 @@ public class TeamMaker {
 
 		return player;
 	}
-
 }
