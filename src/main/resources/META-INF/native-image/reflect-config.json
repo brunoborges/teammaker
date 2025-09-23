@@ -1,0 +1,52 @@
+[
+  {
+    "name": "io.github.brunoborges.teammaker.Player",
+    "allDeclaredConstructors": true,
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "io.github.brunoborges.teammaker.Team",
+    "allDeclaredConstructors": true,
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "io.github.brunoborges.teammaker.TeamMakerConfig",
+    "allDeclaredConstructors": true,
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "io.github.brunoborges.teammaker.TeamMakerConfig$PlayerScoreScale",
+    "allDeclaredConstructors": true,
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "io.github.brunoborges.teammaker.TeamMakerApp",
+    "allDeclaredConstructors": true,
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "picocli.CommandLine$AutoHelpMixin",
+    "allDeclaredConstructors": true,
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "picocli.CommandLine$HelpCommand",
+    "allDeclaredConstructors": true,
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "java.util.LinkedHashMap",
+    "allDeclaredConstructors": true
+  },
+  {
+    "name": "java.util.ArrayList",
+    "allDeclaredConstructors": true
+  }
+]

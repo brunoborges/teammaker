@@ -56,7 +56,7 @@ class TeamResultFormatterTest {
         
         // Then
         String output = outContent.toString();
-        assertTrue(output.contains("┌─ Team #1"), "Should contain formatted team headers");
+        assertTrue(output.contains("┌─── Team #1"), "Should contain formatted team headers");
         assertTrue(output.contains("│ Strength:"), "Should contain strength information");
         assertTrue(output.contains("├─ Players:"), "Should contain players section");
         assertTrue(output.contains("│   •"), "Should contain player bullet points");

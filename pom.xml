@@ -98,4 +98,50 @@
       </plugins>
    </build>
 
+   <profiles>
+      <profile>
+         <id>native</id>
+         <properties>
+            <native.maven.plugin.version>0.10.6</native.maven.plugin.version>
+            <imageName>teammaker</imageName>
+         </properties>
+         <build>
+            <plugins>
+               <plugin>
+                  <groupId>org.graalvm.buildtools</groupId>
+                  <artifactId>native-maven-plugin</artifactId>
+                  <version>${native.maven.plugin.version}</version>
+                  <extensions>true</extensions>
+                  <executions>
+                     <execution>
+                        <id>build-native</id>
+                        <goals>
+                           <goal>compile-no-fork</goal>
+                        </goals>
+                        <phase>package</phase>
+                     </execution>
+                  </executions>
+                  <configuration>
+                     <imageName>${imageName}</imageName>
+                     <mainClass>io.github.brunoborges.teammaker.TeamMakerApp</mainClass>
+                     <buildArgs>
+                        <buildArg>--no-fallback</buildArg>
+                        <buildArg>--install-exit-handlers</buildArg>
+                        <buildArg>--enable-preview</buildArg>
+                        <buildArg>--strict-image-heap</buildArg>
+                        <buildArg>-H:+ReportExceptionStackTraces</buildArg>
+                        <buildArg>-H:+AddAllCharsets</buildArg>
+                        <buildArg>-H:IncludeResourceBundles=sun.util.resources.LocaleNames</buildArg>
+                        <buildArg>--enable-url-protocols=https,http</buildArg>
+                     </buildArgs>
+                     <configurationFileDirectories>
+                        <configurationFileDirectory>src/main/resources/META-INF/native-image</configurationFileDirectory>
+                     </configurationFileDirectories>
+                  </configuration>
+               </plugin>
+            </plugins>
+         </build>
+      </profile>
+   </profiles>
+
 </project>
