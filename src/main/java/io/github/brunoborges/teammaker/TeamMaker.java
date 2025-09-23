@@ -98,8 +98,18 @@ public class TeamMaker {
 	 * 
 	 * @param playerList the list of players to organize into teams
 	 * @return TeamMakerResult containing the teams and balance information
+	 * @throws IllegalArgumentException if the number of players is not evenly divisible by playersPerTeam
 	 */
 	public TeamMakerResult createBalancedTeams(List<Player> playerList) {
+		// Validate that players can be evenly divided into teams
+		if (playerList.size() % playersPerTeam != 0) {
+			throw new IllegalArgumentException(
+				String.format("Number of players (%d) must be evenly divisible by players per team (%d). " +
+							"Current division results in %d complete teams with %d remaining players.",
+							playerList.size(), playersPerTeam, playerList.size() / playersPerTeam, 
+							playerList.size() % playersPerTeam));
+		}
+		
 		initializePlayers(playerList);
 		prepareTeams();
 		assembleTeams();

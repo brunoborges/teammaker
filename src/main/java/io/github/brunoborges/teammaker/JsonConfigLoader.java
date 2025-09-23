@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 
 /**
  * Utility class for loading TeamMaker configuration from JSON files.
@@ -96,38 +95,7 @@ public class JsonConfigLoader {
      * @throws IllegalArgumentException if the configuration is invalid
      */
     private static void validateConfig(TeamMakerConfig config) throws IllegalArgumentException {
-        if (config.getPlayers() == null || config.getPlayers().isEmpty()) {
-            throw new IllegalArgumentException("Configuration must contain at least one player");
-        }
-        
-        if (config.getTeamNames() == null || config.getTeamNames().isEmpty()) {
-            throw new IllegalArgumentException("Configuration must contain at least one team name");
-        }
-        
-        if (config.getScoreScale() == null) {
-            throw new IllegalArgumentException("Configuration must contain score scale information");
-        }
-        
-        // Validate that all player scores are within the defined scale
-        List<Player> invalidPlayers = config.getPlayers().stream()
-                .filter(player -> !config.getScoreScale().isValidScore(player.score()))
-                .toList();
-        
-        if (!invalidPlayers.isEmpty()) {
-            throw new IllegalArgumentException("The following players have scores outside the valid range: " + invalidPlayers);
-        }
-        
-        // Validate that we can form complete teams
-        int playersPerTeam = config.calculatePlayersPerTeam();
-        if (playersPerTeam == 0) {
-            throw new IllegalArgumentException("Not enough players to form teams. Players: " + 
-                    config.getPlayers().size() + ", Teams: " + config.getTeamNames().size());
-        }
-        
-        int totalPlayersInCompleteTeams = config.getTeamNames().size() * playersPerTeam;
-        if (totalPlayersInCompleteTeams > config.getPlayers().size()) {
-            throw new IllegalArgumentException("Not enough players to fill all teams completely. " +
-                    "Players: " + config.getPlayers().size() + ", Required: " + totalPlayersInCompleteTeams);
-        }
+        // Use the comprehensive validation method from TeamMakerConfig
+        config.validate();
     }
 }

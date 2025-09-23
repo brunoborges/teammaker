@@ -1,0 +1,36 @@
+{
+  "scoreScale": {
+    "min": 1.0,
+    "max": 5.0
+  },
+  "teamNames": [
+    "Tigers",
+    "Eagles"
+  ],
+  "players": [
+    {
+      "name": "Alex",
+      "score": 4.2
+    },
+    {
+      "name": "Beth",
+      "score": 3.8
+    },
+    {
+      "name": "Carl",
+      "score": 2.9
+    },
+    {
+      "name": "Dana",
+      "score": 4.1
+    },
+    {
+      "name": "Eric",
+      "score": 3.3
+    },
+    {
+      "name": "Faye",
+      "score": 2.7
+    }
+  ]
+}

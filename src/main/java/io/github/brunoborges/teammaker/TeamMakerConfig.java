@@ -50,12 +50,58 @@ public class TeamMakerConfig {
      * Calculate players per team based on total players and number of teams.
      * 
      * @return number of players per team
+     * @throws IllegalArgumentException if players cannot be evenly divided among teams
      */
     public int calculatePlayersPerTeam() {
         if (players == null || teamNames == null || players.isEmpty() || teamNames.isEmpty()) {
             return 2; // default
         }
-        return players.size() / teamNames.size();
+        
+        int numPlayers = players.size();
+        int numTeams = teamNames.size();
+        
+        if (numPlayers % numTeams != 0) {
+            throw new IllegalArgumentException(
+                String.format("Number of players (%d) must be evenly divisible by number of teams (%d). " +
+                            "Current division results in %d players per team with %d remaining players.",
+                            numPlayers, numTeams, numPlayers / numTeams, numPlayers % numTeams));
+        }
+        
+        return numPlayers / numTeams;
+    }
+    
+    /**
+     * Validate that the configuration has a valid number of players and teams.
+     * 
+     * @throws IllegalArgumentException if the configuration is invalid
+     */
+    public void validate() {
+        if (players == null || players.isEmpty()) {
+            throw new IllegalArgumentException("Players list cannot be null or empty");
+        }
+        
+        if (teamNames == null || teamNames.isEmpty()) {
+            throw new IllegalArgumentException("Team names list cannot be null or empty");
+        }
+        
+        // This will throw an exception if not evenly divisible
+        calculatePlayersPerTeam();
+        
+        // Validate score scale if present
+        if (scoreScale != null) {
+            if (scoreScale.getMin() >= scoreScale.getMax()) {
+                throw new IllegalArgumentException("Score scale minimum must be less than maximum");
+            }
+            
+            // Validate all player scores are within the scale
+            for (Player player : players) {
+                if (!scoreScale.isValidScore(player.score())) {
+                    throw new IllegalArgumentException(
+                        String.format("Player %s has score %.1f which is outside the valid range [%.1f, %.1f]",
+                                    player.name(), player.score(), scoreScale.getMin(), scoreScale.getMax()));
+                }
+            }
+        }
     }
     
     /**

@@ -35,6 +35,10 @@ public class Team {
 		return name;
 	}
 
+	public List<Player> getPlayers() {
+		return new ArrayList<>(players); // Return defensive copy
+	}
+
 	public String toString() {
 		var playersText = new StringBuilder();
 		players.forEach(p -> playersText.append("\n\t\t%s (%.1f),".formatted(p.name(), p.score())));

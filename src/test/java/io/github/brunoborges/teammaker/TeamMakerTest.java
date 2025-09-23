@@ -144,20 +144,44 @@ class TeamMakerTest {
     }
 
     @Test
-    @DisplayName("Should handle odd number of players")
-    void shouldHandleOddNumberOfPlayers() {
+    @DisplayName("Should reject odd number of players that cannot be evenly divided")
+    void shouldRejectOddNumberOfPlayersThatCannotBeEvenlyDivided() {
         // Given
         List<Player> oddPlayers = new ArrayList<>();
         oddPlayers.add(new Player("Player 1", 3.0));
         oddPlayers.add(new Player("Player 2", 3.0));
-        oddPlayers.add(new Player("Player 3", 3.0)); // Odd number: 3
+        oddPlayers.add(new Player("Player 3", 3.0)); // Odd number: 3, cannot be divided by 2
+        
+        // When & Then
+        IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class, 
+            () -> teamMaker.createBalancedTeams(oddPlayers)
+        );
+        
+        assertTrue(exception.getMessage().contains("Number of players (3) must be evenly divisible by players per team (2)"));
+        assertTrue(exception.getMessage().contains("1 remaining players"));
+    }
+
+    @Test
+    @DisplayName("Should handle evenly divisible number of players correctly")
+    void shouldHandleEvenlyDivisibleNumberOfPlayers() {
+        // Given
+        List<Player> evenPlayers = new ArrayList<>();
+        evenPlayers.add(new Player("Player 1", 3.0));
+        evenPlayers.add(new Player("Player 2", 3.0));
+        evenPlayers.add(new Player("Player 3", 3.0));
+        evenPlayers.add(new Player("Player 4", 3.0)); // Even number: 4, can be divided by 2
         
         // When
-        TeamMakerResult result = teamMaker.createBalancedTeams(oddPlayers);
+        TeamMakerResult result = teamMaker.createBalancedTeams(evenPlayers);
         
         // Then
-        // 3 players / 2 players per team = 1 team (integer division, 1 player left out)
-        assertEquals(1, result.getTeams().size());
+        assertEquals(2, result.getTeams().size());
+        for (Team team : result.getTeams()) {
+            assertTrue(team.isComplete());
+            assertEquals(2, team.getPlayers().size());
+            assertEquals(6.0, team.getScore(), 0.001); // 3.0 + 3.0
+        }
     }
 
     @Test
