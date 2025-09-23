@@ -36,20 +36,15 @@ public class Team {
 	}
 
 	public String toString() {
-		StringBuilder string = new StringBuilder();
-		string.append(getName());
-		string.append(" [strength = ").append(getScore()).append(", players = {");
-		for (Player p : players) {
-			string.append("\n\t");
-			string.append(p.name());
-			string.append(" (").append(p.score()).append(')');
-			string.append(',');
-		}
+		var playersText = new StringBuilder();
+		players.forEach(p -> playersText.append("\n\t\t%s (%.1f),".formatted(p.name(), p.score())));
+
 		if (!players.isEmpty()) {
-			string.deleteCharAt(string.length() - 1);
+			playersText.deleteCharAt(playersText.length() - 1); // Remove last comma
 		}
-		string.append("}]");
-		return string.toString();
+
+		return """
+				%s [strength = %.1f, players = {%s}]""".formatted(getName(), getScore(), playersText.toString());
 	}
 
 	public void reset() {
