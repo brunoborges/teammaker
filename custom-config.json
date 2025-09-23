@@ -1,0 +1,46 @@
+{
+  "scoreScale": {
+    "min": 1.0,
+    "max": 5.0
+  },
+  "teamNames": [
+    "Warriors",
+    "Champions",
+    "Legends",
+    "Thunderbolts"
+  ],
+  "players": [
+    {
+      "name": "Alice",
+      "score": 4.5
+    },
+    {
+      "name": "Bob",
+      "score": 3.0
+    },
+    {
+      "name": "Charlie",
+      "score": 4.0
+    },
+    {
+      "name": "Diana",
+      "score": 3.5
+    },
+    {
+      "name": "Eve",
+      "score": 2.5
+    },
+    {
+      "name": "Frank",
+      "score": 3.8
+    },
+    {
+      "name": "Grace",
+      "score": 4.2
+    },
+    {
+      "name": "Henry",
+      "score": 2.8
+    }
+  ]
+}

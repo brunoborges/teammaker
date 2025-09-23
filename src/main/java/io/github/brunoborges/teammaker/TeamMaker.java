@@ -1,5 +1,6 @@
 package io.github.brunoborges.teammaker;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -21,15 +22,29 @@ public class TeamMaker {
 	private List<Team> teams;
 	private double averageStrength;
 	private final int playersPerTeam;
+	private List<String> teamNames;
 
 	public TeamMaker(int playersPerTeam) {
 		this.players = new ArrayList<>();
 		this.teams = new ArrayList<>();
 		this.playersPerTeam = playersPerTeam;
+		this.teamNames = null; // Will use default alphabet-based names
 	}
 
 	public TeamMaker() {
 		this(PLAYERS_PER_TEAM);
+	}
+
+	/**
+	 * Creates a TeamMaker instance from JSON configuration.
+	 * 
+	 * @param config the configuration loaded from JSON
+	 */
+	public TeamMaker(TeamMakerConfig config) {
+		this.players = new ArrayList<>();
+		this.teams = new ArrayList<>();
+		this.playersPerTeam = config.calculatePlayersPerTeam();
+		this.teamNames = new ArrayList<>(config.getTeamNames());
 	}
 
 	/**
@@ -39,6 +54,43 @@ public class TeamMaker {
 	 */
 	public TeamMakerResult createBalancedTeams() {
 		return createBalancedTeams(DefaultPlayers.get());
+	}
+
+	/**
+	 * Creates balanced teams from JSON configuration file.
+	 * 
+	 * @param configPath path to the JSON configuration file
+	 * @return TeamMakerResult containing the teams and balance information
+	 * @throws IOException if the configuration file cannot be loaded
+	 */
+	public static TeamMakerResult createBalancedTeamsFromConfig(String configPath) throws IOException {
+		TeamMakerConfig config = JsonConfigLoader.loadFromFile(configPath);
+		TeamMaker teamMaker = new TeamMaker(config);
+		return teamMaker.createBalancedTeams(config.getPlayers());
+	}
+
+	/**
+	 * Creates balanced teams from JSON configuration resource.
+	 * 
+	 * @param resourceName name of the JSON configuration resource
+	 * @return TeamMakerResult containing the teams and balance information
+	 * @throws IOException if the configuration resource cannot be loaded
+	 */
+	public static TeamMakerResult createBalancedTeamsFromResource(String resourceName) throws IOException {
+		TeamMakerConfig config = JsonConfigLoader.loadFromResource(resourceName);
+		TeamMaker teamMaker = new TeamMaker(config);
+		return teamMaker.createBalancedTeams(config.getPlayers());
+	}
+
+	/**
+	 * Creates balanced teams from the provided configuration.
+	 * 
+	 * @param config the team maker configuration
+	 * @return TeamMakerResult containing the teams and balance information
+	 */
+	public static TeamMakerResult createBalancedTeamsFromConfig(TeamMakerConfig config) {
+		TeamMaker teamMaker = new TeamMaker(config);
+		return teamMaker.createBalancedTeams(config.getPlayers());
 	}
 
 	/**
@@ -59,6 +111,15 @@ public class TeamMaker {
 		return new TeamMakerResult(new ArrayList<>(teams), balanced, minStrength, maxStrength);
 	}
 
+	/**
+	 * Get the default list of players.
+	 * 
+	 * @return list of default players
+	 */
+	public List<Player> getDefaultPlayers() {
+		return DefaultPlayers.get();
+	}
+
 	private void initializePlayers(List<Player> playerList) {
 		players.clear();
 		players.addAll(playerList);
@@ -68,8 +129,15 @@ public class TeamMaker {
 	private void prepareTeams() {
 		teams.clear();
 		int totalTeams = players.size() / playersPerTeam;
+		
 		for (int i = 0; i < totalTeams; i++) {
-			teams.add(new Team("Team " + ALPHABET[i], playersPerTeam));
+			String teamName;
+			if (teamNames != null && i < teamNames.size()) {
+				teamName = teamNames.get(i);
+			} else {
+				teamName = "Team " + ALPHABET[i % ALPHABET.length];
+			}
+			teams.add(new Team(teamName, playersPerTeam));
 		}
 	}
 
@@ -123,25 +191,27 @@ public class TeamMaker {
 	}
 
 	private Player getPlayer(double strength) {
-		Player player = null;
 		if (players.size() == 0)
 			return null;
 		else if (players.size() == 1)
 			return players.remove(0);
 
-		Iterator<Player> it = players.iterator();
-		while (it.hasNext()) {
-			Player p = it.next();
-			if (p.score() == strength) {
-				player = p;
-				break;
+		Player bestPlayer = null;
+		double bestDifference = Double.MAX_VALUE;
+
+		// Find the player with score closest to the desired strength
+		for (Player p : players) {
+			double difference = Math.abs(p.score() - strength);
+			if (difference < bestDifference) {
+				bestDifference = difference;
+				bestPlayer = p;
 			}
 		}
 
-		if (player != null)
-			players.remove(player);
+		if (bestPlayer != null)
+			players.remove(bestPlayer);
 
-		return player;
+		return bestPlayer;
 	}
 
 	private Player getPlayer(Team currentTeam) {
@@ -172,8 +242,11 @@ public class TeamMaker {
 		}
 
 		Player player = getPlayer(strength);
-		while (player == null && players.size() > 0)
-			player = getPlayer(currentTeam);
+		while (player == null && players.size() > 0) {
+			// Try different strength values if no player found
+			strength = Math.random() * 5 + 1;
+			player = getPlayer(strength);
+		}
 
 		return player;
 	}
