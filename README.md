@@ -210,7 +210,7 @@ java -jar futebol-1.0-SNAPSHOT.jar --default --verbose
 
 ```
 ╔══════════════════════════════════════════════════════════════════╗
-║                      ⚽ TEAM DRAW RESULTS ⚽                     ║
+║                      ⚽ TEAM DRAW RESULTS ⚽                    ║
 ╚══════════════════════════════════════════════════════════════════╝
 
 ┌── Team A 
@@ -235,7 +235,7 @@ Strength Range: 7.1 - 7.7
 Max Difference: 0.6 ✅ WELL BALANCED!
 
 ╔══════════════════════════════════════════════════════════════════╗
-║               🏆 GOOD LUCK WITH YOUR MATCHES! 🏆                 ║
+║               🏆 GOOD LUCK WITH YOUR MATCHES! 🏆                ║
 ╚══════════════════════════════════════════════════════════════════╝
 ```
 
